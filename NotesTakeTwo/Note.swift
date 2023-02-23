@@ -10,12 +10,13 @@ import Foundation
 class Note: Identifiable{
     
     var id = UUID()
-    // var header: String
+    var header: String
     var textContent: String
     
-    init(textContent: String) {
+    init(id: String, header: String, textContent: String) {
         self.id = UUID()
         self.textContent = textContent
+        self.header = header
     }
     
 }

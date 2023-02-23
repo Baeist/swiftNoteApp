@@ -11,10 +11,12 @@
 import SwiftUI
 import Foundation
 import Firebase
+import UIKit
 
 struct ContentView: View {
     
-    var firebaseService = FirebaseService()
+    @ObservedObject var firebaseService = FirebaseService()
+    var firebaseDemo = FirebaseDemo()
     
     @State var noteList: [Note] = []
     
@@ -24,25 +26,17 @@ struct ContentView: View {
             
             Button("Tilføj ny note") {
                 
-                var note: Note = Note(textContent: "");
+               // firebaseService.uploadImage()
+                
+               // firebaseService.downloadImage()
+                
+                var note: Note = Note(id: "", header: "",textContent: "");
                 
                 noteList.append(note)
                 
             }
-            /*   Button("Hent gamle noter"){
-             firebaseService.getNotesFromDB{(noteList, error) in
-             if let error = error {
-             print("Error getting notes: \(error)")
-             } else {
-             print("Retrieved \(noteList?.count ?? -1) notes")
-             // Do something with the notes array
-             
-             
-             
-             }
-             }
-             }
-             } */
+            
+            
             NavigationView{
                 
                 List($noteList){ note in

@@ -18,6 +18,7 @@
 		4601EBE4299BF74A00809357 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4601EBE3299BF74A00809357 /* GoogleService-Info.plist */; };
 		4601EBE6299D676D00809357 /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4601EBE5299D676D00809357 /* Note.swift */; };
 		4601EBE8299E5D7E00809357 /* NoteWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4601EBE7299E5D7E00809357 /* NoteWriter.swift */; };
+		4601EBEA29A4AC9000809357 /* FirebaseDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4601EBE929A4AC9000809357 /* FirebaseDemo.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		4601EBE3299BF74A00809357 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../GoogleService-Info.plist"; sourceTree = "<group>"; };
 		4601EBE5299D676D00809357 /* Note.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
 		4601EBE7299E5D7E00809357 /* NoteWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteWriter.swift; sourceTree = "<group>"; };
+		4601EBE929A4AC9000809357 /* FirebaseDemo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseDemo.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +72,7 @@
 				4601EBE1299BEFA100809357 /* FirebaseService.swift */,
 				4601EBE5299D676D00809357 /* Note.swift */,
 				4601EBE7299E5D7E00809357 /* NoteWriter.swift */,
+				4601EBE929A4AC9000809357 /* FirebaseDemo.swift */,
 				4601EBE3299BF74A00809357 /* GoogleService-Info.plist */,
 				4601EBCE299BEA0900809357 /* Assets.xcassets */,
 				4601EBD0299BEA0900809357 /* Preview Content */,
@@ -167,6 +170,7 @@
 				4601EBCD299BEA0700809357 /* ContentView.swift in Sources */,
 				4601EBE2299BEFA100809357 /* FirebaseService.swift in Sources */,
 				4601EBCB299BEA0700809357 /* NotesTakeTwoApp.swift in Sources */,
+				4601EBEA29A4AC9000809357 /* FirebaseDemo.swift in Sources */,
 				4601EBE8299E5D7E00809357 /* NoteWriter.swift in Sources */,
 				4601EBE6299D676D00809357 /* Note.swift in Sources */,
 			);
