@@ -6,17 +6,23 @@
 //
 
 import Foundation
+import UIKit
+import SwiftUI
 
 class Note: Identifiable{
     
-    var id = UUID()
-    var header: String
+    var id: String
+    // var header: String
     var textContent: String
+    var hasImage = false
+    var noteImage: UIImage? = nil
     
-    init(id: String, header: String, textContent: String) {
-        self.id = UUID()
+    init(id: String, textContent: String, hasImage:Bool) {
+        self.id = id
         self.textContent = textContent
-        self.header = header
+       // self.header = header
+        self.hasImage = hasImage
+        
     }
     
 }

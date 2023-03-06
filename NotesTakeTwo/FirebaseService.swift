@@ -6,18 +6,29 @@
 //
 
 import Foundation
+import SwiftUI
 import Firebase
 import FirebaseStorage
 import UIKit
+var fbService = FirebaseService() // global scope, used like singleton
 
 class FirebaseService: ObservableObject{
     
     private var dataBase = Firestore.firestore()
-    private let notes = "notes"
+    let storage = Storage.storage()
     
+    private let notes = "notes"
     @Published var noteList = [Note]()
     
-    private var storage = Storage.storage()
+    
+    
+    var image: UIImage? = UIImage(named: "catPicture.png")
+    
+    
+    
+    init(){
+        loadDatabase()
+    }
     
     func uploadImage(){
         
@@ -39,21 +50,22 @@ class FirebaseService: ObservableObject{
         
     }
     
-    func downloadImage(){
-        let imageRef = storage.reference(withPath: "cattyPicture.png")
-        imageRef.getData(maxSize: 500000000){ data, error in
+    func downloadImage(note:Note, completion: @escaping (UIImage?) -> Void){
+        let imageRef = storage.reference(withPath: note.id)
+        imageRef.getData(maxSize: 5000000){ data, error in
             
             if error == nil{
-                let image = UIImage(data:data!)
-                print(image?.description)
+                completion(UIImage(data:data!))
+                
             }else{
-                print("something went wrong")
+                print("something went wrong with image download")
+                
             }
             
         }
     }
    
-    func loadContinuously(){
+    func loadDatabase(){
         dataBase.collection(notes).addSnapshotListener{ snap, error in
             if error == nil {
                 
@@ -61,38 +73,87 @@ class FirebaseService: ObservableObject{
                     
                     for doc in s.documents{
                         
-                        if let textStr = doc.data()["text"] as? String{
-                            
-                            if let headStr = doc.data()["header"] as? String{
+                        if let textStr = doc.data()["text"] as? String,
+                           let hasImage = doc.data()["hasImage"] as? Bool
+                        {
                                 
-                                let n = Note(id: doc.documentID, header: headStr,  textContent: textStr)
-                                self.noteList.append(n)
+                                let n = Note(id: doc.documentID,  textContent: textStr, hasImage: hasImage)
+                                
+                            self.noteList.append(n)
                             }
                         }
                     }
                     
                 }
-            } else{
-                
+             else{
+                 if let e = error{
+                     print("failure: \(e)")
+                 }
             }
-            
-            
         }
     }
     
-    func addNoteToDB(dbNote:String, dbHeader:String){
+    func addNoteToDB(dbNote:String){
         
         let newDocument = dataBase.collection(notes).document()
-        var dataDictionaryMap = [String:String]()
+        var dataDictionaryMap = [String:Any]()
         
         dataDictionaryMap["text"] = dbNote
-        dataDictionaryMap["header"] = dbHeader
+        dataDictionaryMap["hasImage"] = false
+        // dataDictionaryMap["header"] = dbHeader
         
         newDocument.setData(dataDictionaryMap)
         
     }
     
+    func updateNote(note:Note){
+        if note.hasImage {
+            uploadImageWithNote(note: note)
+        }
+        else{
+            deleteImageFromNote(note: note)
+        }
+        
+        let document = dataBase.collection(notes).document(note.id)
+        var data = [String:Any]()
+        data["text"] = note.textContent
+        data["hasImage"] = note.hasImage
+        document.setData(data)
+        
+    }
     
+    func uploadImageWithNote(note:Note){
+        
+        if let image = note.noteImage{
+            let imgData = image.jpegData(compressionQuality: 1.0)!
+            let imageReference = storage.reference().child(note.id)
+            let metaData = StorageMetadata()
+            
+            metaData.contentType = "image/jpeg"
+            imageReference.putData(imgData, metadata: metaData){meta, error in
+                
+                if error == nil {
+                    print("successfully uploaded image")
+                }
+                else{
+                    print("image upload failed \(String(describing: error))")
+                }
+                
+            }
+        }
+        
+    }
+    
+    func deleteImageFromNote(note: Note){
+        let imageReference = storage.reference().child(note.id)
+        imageReference.delete { error in
+            if error == nil{
+                print("deleted image")
+            }else{
+                print("failed to delete image \(String(describing: error))")
+            }
+        }
+    }
     
     
 }

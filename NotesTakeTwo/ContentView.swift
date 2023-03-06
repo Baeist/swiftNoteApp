@@ -1,10 +1,15 @@
 //
 //  ContentView.swift
 //  NotesTakeTwo
-// Create an app "My Personal Notes" which allows the user to:
-// Create a new note
-// Save notes to Firestore
-// mangler Optional: Read from Firestore
+// A list of text notes
+// Button to add new empty note
+// Click on a note leads to detail view:
+// Shows all the text in an editable text view
+// Shows an image (if there is one)
+// Button to get image from photo library
+// Button to save the text and image
+// Button to delete the image
+
 //  Created by Lars Dam on 14/02/2023.
 //
 
@@ -15,10 +20,10 @@ import UIKit
 
 struct ContentView: View {
     
-    @ObservedObject var firebaseService = FirebaseService()
-    var firebaseDemo = FirebaseDemo()
+    @ObservedObject var firebaseService = fbService
     
-    @State var noteList: [Note] = []
+    
+    
     
     var body: some View {
         
@@ -26,32 +31,36 @@ struct ContentView: View {
             
             Button("Tilføj ny note") {
                 
-               // firebaseService.uploadImage()
                 
-               // firebaseService.downloadImage()
-                
-                var note: Note = Note(id: "", header: "",textContent: "");
-                
-                noteList.append(note)
+                firebaseService.addNoteToDB(dbNote: "Write here")
                 
             }
             
             
             NavigationView{
                 
-                List($noteList){ note in
+                List($firebaseService.noteList){ note in
                     
                     NavigationLink
                     {
-                        NoteWriter(textInput: note.textContent)
+                        NoteWriter(textInput: note.textContent, note: note)
                     }
                 label:
                     {
-                        Text("Note")
+                        HStack{
+                            
+                            Text(note.textContent.wrappedValue)
+                            /*
+                            Image("catPicture")
+                                .resizable()
+                                .scaledToFill()
+                                .offset(x: 140) */
+                             //   .frame(width: 20)
+                        }
+                        .frame(width: 100, height: 15)
                     }
                 }
                 .navigationTitle("Noter")
-                
             }
         }
         
@@ -69,11 +78,4 @@ struct ContentView_Previews: PreviewProvider {
     }
 }
 
-/*  firebaseService.getNotesFromDB{(noteList, error) in
- if let error = error {
-         print("Error getting notes: \(error)")
-     } else {
-         print("Retrieved \(noteList.count) notes")
-         // Do something with the notes array
-     }
-         }*/
+
