@@ -24,5 +24,11 @@ class Note: Identifiable{
         self.hasImage = hasImage
         
     }
-    
+    init(id: String, textContent: String, hasImage:Bool, noteImage:UIImage) {
+        self.id = id
+        self.textContent = textContent
+       // self.header = header
+        self.hasImage = hasImage
+        self.noteImage = noteImage
+    }
 }

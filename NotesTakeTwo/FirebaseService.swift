@@ -70,16 +70,23 @@ class FirebaseService: ObservableObject{
             if error == nil {
                 
                 if let s = snap{
-                    
+                    self.noteList.removeAll()
                     for doc in s.documents{
                         
                         if let textStr = doc.data()["text"] as? String,
                            let hasImage = doc.data()["hasImage"] as? Bool
                         {
                                 
-                                let n = Note(id: doc.documentID,  textContent: textStr, hasImage: hasImage)
+                            let n = Note(id: doc.documentID,  textContent: textStr, hasImage: hasImage)
+                            if n.hasImage{
+                                self.downloadImage(note: n){foundImage in
+                                    let n2 = Note(id: doc.documentID,  textContent: textStr, hasImage: hasImage, noteImage: foundImage!)
+                                    self.noteList.append(n2)
+                                }
+                            }else{
+                                self.noteList.append(n)
                                 
-                            self.noteList.append(n)
+                                }
                             }
                         }
                     }

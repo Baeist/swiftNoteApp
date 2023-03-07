@@ -17,12 +17,11 @@ import SwiftUI
 import Foundation
 import Firebase
 import UIKit
+import PhotosUI
 
 struct ContentView: View {
     
     @ObservedObject var firebaseService = fbService
-    
-    
     
     
     var body: some View {
@@ -40,30 +39,36 @@ struct ContentView: View {
             NavigationView{
                 
                 List($firebaseService.noteList){ note in
-                    
-                    NavigationLink
-                    {
-                        NoteWriter(textInput: note.textContent, note: note)
-                    }
-                label:
-                    {
-                        HStack{
+                    HStack{
+                        if note.hasImage.wrappedValue{
                             
-                            Text(note.textContent.wrappedValue)
-                            /*
-                            Image("catPicture")
+                            Image(uiImage: note.noteImage.wrappedValue ?? UIImage(systemName: "photo.circle.fill")!)
                                 .resizable()
                                 .scaledToFill()
-                                .offset(x: 140) */
-                             //   .frame(width: 20)
+                                .frame(width: 20, height: 20)
+                            
+                            // .offset(x: 140)
+                        }else{
+                            Image(systemName: "photo.circle.fill")
                         }
-                        .frame(width: 100, height: 15)
-                    }
+                            NavigationLink
+                            {
+                                NoteWriter(textInput: note.textContent, note: note)
+                            }
+                        label:
+                            {
+                                
+                                Text(note.textContent.wrappedValue)
+                               
+                            }
+                            
+                        }
+                    
+                    
                 }
                 .navigationTitle("Noter")
             }
         }
-        
         .padding(10)
         
         //  firebaseService.addNoteToDB(dbNote: "checking")
