@@ -24,7 +24,10 @@ struct NoteWriter: View{
                 Image(uiImage: usedImage ?? UIImage(systemName: "photo.circle.fill")!)
                     .resizable()
                     .frame(width: 200, height: 200)
-                TextField("Skrive felt", text: $textInput)
+                    .position(x:200, y:0)
+                TextField("Skrive felt", text: $textInput, axis: .vertical)
+                    .offset(y:-300)
+                    
                     .padding(10)
                 HStack{
                     
@@ -41,6 +44,7 @@ struct NoteWriter: View{
                 }
             }
         }
+        
         .toolbar{
             ToolbarItem(placement: .navigationBarTrailing){
                 PhotosPicker(selection: $selectedImage, matching: .images, photoLibrary: .shared()){
